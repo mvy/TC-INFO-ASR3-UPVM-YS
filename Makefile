@@ -122,6 +122,19 @@ dvi/fast:
 .PHONY : dvi/fast
 
 #=============================================================================
+# Target rules for targets named html
+
+# Build rule for target.
+html: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 html
+.PHONY : html
+
+# fast build rule for target.
+html/fast:
+	$(MAKE) -f CMakeFiles/html.dir/build.make CMakeFiles/html.dir/build
+.PHONY : html/fast
+
+#=============================================================================
 # Target rules for targets named pdf
 
 # Build rule for target.
@@ -169,6 +182,7 @@ help:
 	@echo "... auxclean"
 	@echo "... dvi"
 	@echo "... edit_cache"
+	@echo "... html"
 	@echo "... pdf"
 	@echo "... ps"
 	@echo "... rebuild_cache"

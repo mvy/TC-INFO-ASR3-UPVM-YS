@@ -34,6 +34,7 @@ SET(CMAKE_MAKEFILE_PRODUCTS
 SET(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/auxclean.dir/DependInfo.cmake"
   "CMakeFiles/dvi.dir/DependInfo.cmake"
+  "CMakeFiles/html.dir/DependInfo.cmake"
   "CMakeFiles/pdf.dir/DependInfo.cmake"
   "CMakeFiles/ps.dir/DependInfo.cmake"
   "CMakeFiles/safepdf.dir/DependInfo.cmake"

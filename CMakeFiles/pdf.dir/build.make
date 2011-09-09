@@ -41,16 +41,35 @@ CMAKE_BINARY_DIR = /home/mvy/git/TC-INFO-ASR3-UPVM-YS
 
 CMakeFiles/pdf: build/presentation.pdf
 
+build/presentation.pdf: build/CH02-IntroductionUnix/images/arbo.pdf
 build/presentation.pdf: build/CH02-IntroductionUnix/presentation.tex
-build/presentation.pdf: build/CH02-IntroductionUnix/introductionyves.tex
+build/presentation.pdf: build/CH02-IntroductionUnix/content.tex
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/mvy/git/TC-INFO-ASR3-UPVM-YS/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating build//presentation.pdf"
 	/usr/bin/cmake -E chdir build/ /usr/bin/pdflatex -interaction=nonstopmode CH02-IntroductionUnix/presentation.tex
 	/usr/bin/cmake -E chdir build/ /usr/bin/pdflatex -interaction=nonstopmode CH02-IntroductionUnix/presentation.tex
 	/usr/bin/cmake -E chdir build/ /usr/bin/pdflatex -interaction=nonstopmode CH02-IntroductionUnix/presentation.tex
 
+build/CH02-IntroductionUnix/images/arbo.pdf: CH02-IntroductionUnix/images/arbo.pdf
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/mvy/git/TC-INFO-ASR3-UPVM-YS/CMakeFiles $(CMAKE_PROGRESS_2)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating build//CH02-IntroductionUnix/images/arbo.pdf"
+	/usr/bin/cmake -E copy /home/mvy/git/TC-INFO-ASR3-UPVM-YS/CH02-IntroductionUnix/images/arbo.pdf build//CH02-IntroductionUnix/images/arbo.pdf
+
+build/CH02-IntroductionUnix/presentation.tex: CH02-IntroductionUnix/presentation.tex
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/mvy/git/TC-INFO-ASR3-UPVM-YS/CMakeFiles $(CMAKE_PROGRESS_3)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating build//CH02-IntroductionUnix/presentation.tex"
+	/usr/bin/cmake -E copy /home/mvy/git/TC-INFO-ASR3-UPVM-YS/CH02-IntroductionUnix/presentation.tex build//CH02-IntroductionUnix/presentation.tex
+
+build/CH02-IntroductionUnix/content.tex: CH02-IntroductionUnix/content.tex
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/mvy/git/TC-INFO-ASR3-UPVM-YS/CMakeFiles $(CMAKE_PROGRESS_4)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold "Generating build//CH02-IntroductionUnix/content.tex"
+	/usr/bin/cmake -E copy /home/mvy/git/TC-INFO-ASR3-UPVM-YS/CH02-IntroductionUnix/content.tex build//CH02-IntroductionUnix/content.tex
+
 pdf: CMakeFiles/pdf
 pdf: build/presentation.pdf
+pdf: build/CH02-IntroductionUnix/images/arbo.pdf
+pdf: build/CH02-IntroductionUnix/presentation.tex
+pdf: build/CH02-IntroductionUnix/content.tex
 pdf: CMakeFiles/pdf.dir/build.make
 .PHONY : pdf
 

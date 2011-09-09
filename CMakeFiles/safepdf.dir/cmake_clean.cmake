@@ -21,8 +21,8 @@ FILE(REMOVE_RECURSE
   "build//presentation.pdf"
   "build//CH02-IntroductionUnix/presentation.aux"
   "build//CH02-IntroductionUnix/presentation.tex.aux"
-  "build//CH02-IntroductionUnix/introductionyves.aux"
-  "build//CH02-IntroductionUnix/introductionyves.tex.aux"
+  "build//CH02-IntroductionUnix/content.aux"
+  "build//CH02-IntroductionUnix/content.tex.aux"
   "CMakeFiles/safepdf"
 )
 

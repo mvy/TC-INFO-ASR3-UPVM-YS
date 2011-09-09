@@ -21,10 +21,13 @@ FILE(REMOVE_RECURSE
   "build//presentation.pdf"
   "build//CH02-IntroductionUnix/presentation.aux"
   "build//CH02-IntroductionUnix/presentation.tex.aux"
-  "build//CH02-IntroductionUnix/introductionyves.aux"
-  "build//CH02-IntroductionUnix/introductionyves.tex.aux"
+  "build//CH02-IntroductionUnix/content.aux"
+  "build//CH02-IntroductionUnix/content.tex.aux"
   "CMakeFiles/pdf"
   "build//presentation.pdf"
+  "build//CH02-IntroductionUnix/images/arbo.pdf"
+  "build//CH02-IntroductionUnix/presentation.tex"
+  "build//CH02-IntroductionUnix/content.tex"
 )
 
 # Per-language clean rules from dependency scanning.
