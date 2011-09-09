@@ -1,0 +1,5 @@
+/home/mvy/git/TC-INFO-ASR3-UPVM-YS/CMakeFiles/auxclean.dir
+/home/mvy/git/TC-INFO-ASR3-UPVM-YS/CMakeFiles/dvi.dir
+/home/mvy/git/TC-INFO-ASR3-UPVM-YS/CMakeFiles/pdf.dir
+/home/mvy/git/TC-INFO-ASR3-UPVM-YS/CMakeFiles/ps.dir
+/home/mvy/git/TC-INFO-ASR3-UPVM-YS/CMakeFiles/safepdf.dir
