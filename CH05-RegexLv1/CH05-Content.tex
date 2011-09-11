@@ -1,0 +1,377 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Introduction aux Systèmes d'exploitation  %%
+%%   * Historique                            %%
+%%   * Principes fondamentaux                %%
+%%   * Grandes classes de systèmes           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Systèmes d'exploitation}
+\subtitle{Les expressions regulières}
+
+\author{Yves \textsc{Stadler}}\institute{Codasystem, UPV-M}
+
+\date{\today}
+
+\begin{document}
+
+
+%%
+% Page de Titre
+%%
+\begin{frame}
+\titlepage
+\end{frame}
+
+\def\sectitle{Introduction}
+\def\subsectitle{Vocabulaire}
+
+\begin{frame}{\sectitle}
+\begin{block}{\subsectitle}
+Expression régulière / Expression rationnelle
+\end{block}
+
+\begin{block}{\subsectitle}
+Parfois motif, ou en anglais pattern
+\end{block}
+
+\end{frame}
+
+
+
+\def\subsectitle{Késako?}
+\begin{frame}{\sectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+\item Chaîne de caractères
+\item Décrit un ensemble de chaînes de caractères
+\end{itemize}
+\end{block}
+
+
+\def\subsectitle{D'où est-ce que cela vient?}
+\begin{block}{\subsectitle}
+\begin{itemize}
+\item De la théorie des mathématiques sur les langages
+\item Ken Thompson les intègre dans qed -> ed -> grep
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+
+\def\subsectitle{À quoi ça sert?}
+\begin{frame}{\sectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+\item Décrire et classifier les langages
+\item Editer, contrôler, manipuler du texte
+\end{itemize}
+\end{block}
+
+\def\subsectitle{Comment les utiliser}
+\begin{block}{\subsectitle}
+\begin{itemize}
+\item Lex
+\item Expr
+\item awk
+\item Perl, TCL, Python
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\sectitle{Principes}
+\def\subsectitle{Les bases}
+\begin{frame}{\sectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+\item On veut décrire un ensemble de chaines par un motif
+\item On va utiliser des alternatives et des quantifieurs
+\item On rajoutera quelques méta-caractères
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\sectitle{Alternatives}
+\def\subsectitle{Usage}
+\begin{frame}[containsverbatim]{\sectitle}
+\begin{block}{\subsectitle}
+\begin{itemize}
+\item La barre verticale | est l'opérateur d'alternation (opérateur d'alternative)
+\item \verb!a|e! décrit les chaînes suivantes : "a" et "e"
+\item \verb!ab|eb! : "ab" et "eb"
+\item \verb!Bonjour|Aurevoir! : "Bonjour" et "Aurevoir"
+\end{itemize}
+\end{block}
+
+\begin{block}{\subsectitle}
+\begin{itemize}
+\item Les parenthèses permettent de gérer la priorité et les groupements
+\item Exemple avec "ex-équo", "ex-equo", "ex-aequo" et "ex-æquo" 
+\item \verb!(ae|e)quo! et \verb!aequo|equo! désignent tout les deux les chaînes "aequo" et "equo"
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+
+\def\ftitle{Quantifieurs de bases}
+\def\blocktitle{0, 1 et plus}
+\begin{frame}[containsverbatim]{\ftitle}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Un quantifieur quantifie le groupement le précédent
+\item \verb!?! : le groupe peut apparaître zéro ou une fois
+\item \verb!*! : le groupe peut apparaître zéro, une ou plusieurs fois
+\item \verb!+! : le groupe doit apparaître au moins une fois, ou plus. 
+\end{itemize}
+\end{block}
+
+
+\def\blocktitle{Exemple}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb!toto?! désigne : "tot" et "toto"
+\item \verb!toto*! désigne : "tot", "toto", "totoo", "toto...o"
+\item \verb!toto+! désigne : "toto", "totoo", "toto....o" mais pas "tot"
+\item \verb!ex-(a?e|æ|é)quo! désigne : "ex-équo", "ex-equo", "ex-aequo" et "ex-æquo"
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+\begin{frame}[containsverbatim]{\ftitle}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb!(a|b)*aaa! désigne toute chaîne commençant par une suite (nulle ou non) de caractères "a" ou "b" se terminant par "aaa"
+\item \verb!(0|1|2|3|4|5|6|7|8|9)+! désigne tous les nombres entier (mêmes ceux commençant par des 0)
+\end{itemize}
+\end{block}
+
+\def\blocktitle{Attention}
+\begin{alertblock}{\blocktitle}
+\begin{itemize}
+\item Une chaîne vide peut être décrite par un motif
+\item \verb!a?b?c?d?e?f?g?h?i?j?k?! décrit la chaîne vide, ou une suite de lettres de a à k se suivant dans l'ordre.
+\item La chaîne vide correspond (match) aussi le motif \verb!(item)*!.
+\item En revanche, elle le match pas le motif \verb!item*!, ni \verb!(item)+!.
+\end{itemize}
+\end{alertblock}
+\end{frame}
+
+\def\ftitle{Méta-caractères}
+\begin{frame}[containsverbatim]{\ftitle}
+\def\blocktitle{Classes}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb![...]! : N'importe quel caractères dans les crochets
+\item \verb![^...]! : N'importe quel caractères qui n'est pas dans les crochets
+\end{itemize}
+\end{block}
+
+\def\blocktitle{Intervalle}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb![a-z]! : toutes les lettres minuscules
+\item \verb![A-Z]! : toutes les lettres majuscules
+\item \verb![A-Za-z]! : toutes les lettres majuscules et miniscules
+\item \verb![0-9]! : tous les chiffres.
+\end{itemize}
+\end{block}
+
+\def\blocktitle{Exemples}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb!h[aeiouy]! désigne : "ha", "hi", "ho", "hu", "hy"
+\item \verb!h[^aeiouy]! désigne : "hb", "hc", "hd", "hf" ... sauf "ha", "hi", "ho", "hu", "hy"
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]{\ftitle}
+\def\blocktitle{Début, fin... joker!}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb!^! : début de phrase
+\item \verb!$! : fin de phrase %$
+\item \verb!.! : n'importe quel caractère
+\end{itemize}
+\end{block}
+
+\def\blocktitle{Exemples}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb!^cours.*! : chaîne débutant par cours, et suivie d'autres caractères
+\item \verb!^cours! : chaîne commençant par cours
+\item \verb!cours$! : chaînes se terminant par cours %$
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\def\ftitle{POSIX ou PCRE}
+\begin{frame}[containsverbatim]{\ftitle}
+\def\blocktitle{Vocabulaire}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Beaucoup de syntaxe se sont développées pour les expressions régulières
+\item Les deux principales sont celles préconisée par POSIX (Portable Open Software Interface X) et les PCRE (Perl Compatible Regular Expression)
+\end{itemize}
+\end{block}
+
+\def\blocktitle{Notation}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item On commence et termine les expressions PCRE par \verb!#!
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\ftitle{POSIX}
+\begin{frame}[containsverbatim]{\ftitle}
+\def\blocktitle{Outils}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item ed
+\item grep
+\item sed
+\item vi
+\end{itemize}
+\end{block}
+
+
+%\item \verb!\{m,n\}	: m = minimum, n = maximum. (Si pas de premier argument : 0)
+%\item On doit échapper les parenthèses : \verb!\( \)!
+
+\def\blocktitle{Quantifieurs supplémentaires}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb!{m,n}!	: m = minimum, n = maximum. (Si pas de premier argument : 0, si le second est omis : infini)
+\item Parenthèses : \verb!( )!
+\item \verb!{0,1}! ou \verb!{,1}!: ?
+\item \verb!{0,}! : *
+\item \verb!{1,}! : +
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[containsverbatim]{\ftitle}
+
+\def\blocktitle{Attention}
+\begin{alertblock}{\blocktitle}
+\begin{itemize}
+\item Dans vim ou emacs, les regexp étendue ne sont pas POSIX, il faut echapper les ( )  et \{ \}
+\end{itemize}
+\end{alertblock}
+
+\def\blocktitle{Échappement}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb!(, ), [, ], ., *, ?, +, ^, |, $ et \! doivent être échappés pour avoir leur signification textuelle. %$
+\item On utilise le backslash.
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+
+\def\ftitle{Classes supplémentaires}
+\begin{frame}[containsverbatim]{\ftitle}
+\def\blocktitle{Classes POSIX}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb![:cntrl:]! 	Caractère de contrôle 	\verb![\x00-\x1F\x7F]!
+\item \verb![:space:]! 	Espace blanc ou séparateur de ligne ou de paragraphe 	\verb![ \t\r\n\v\f]!
+\item \verb![:blank:]! 	Espace blanc ou tabulation non séparateur de ligne ou de paragraphe 	\verb![ \t]!
+\item \verb![:print:]! 	Espace simple ou caractère graphique visible 	\verb![\x20-\x7E]!
+\item \verb![:graph:]! 	Caractère graphique visible 	\verb![\x21-\x7E]!
+\item \verb![:punct:]! 	Caractère de ponctuation 	\verb<[!"#$%&'()*+,-./:;?@[\]_`{|}~]<
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\ftitle{Introduction}
+\begin{frame}[containsverbatim]{\ftitle}
+\def\blocktitle{Vocabulaire}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb![:alnum:]! 	Caractère alphanumérique 	\verb![0-9a-zA-Z]!
+\item \verb![:digit:]! 	Chiffre décimal 	\verb![0-9]!
+\item \verb![:xdigit:]! 	Chiffre hexadécimal 	\verb![0-9a-fA-F]!
+\item \verb![:alpha:]! 	Caractère alphabétique 	\verb![a-zA-Z]!
+\item \verb![:lower:]! 	Lettre minuscule 	\verb![a-z]!
+\item \verb![:upper:]! 	Lettre capitale 	\verb![A-Z]!
+\end{itemize}
+\end{block}
+\end{frame}
+
+\def\ftitle{PCRE}
+\begin{frame}[containsverbatim]{\ftitle}
+\def\blocktitle{Quantificateurs}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Comme pour POSIX étendu
+\end{itemize}
+\end{block}
+
+\def\blocktitle{Classes}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Dans une classes les caractères ont leur signification littérale.
+\item Sauf \verb!# ] -!
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]{\ftitle}
+\def\blocktitle{Classes abrégées}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb!\d! 	Chiffre : \verb![0-9]!
+\item \verb!\D! 	Pas un chiffre : \verb![^0-9]!
+\item \verb!\w! 	Mot : \verb![a-zA-Z0-9_]!
+\item \verb!\W! 	Pas un mot : \verb![^a-zA-Z0-9_]!
+\item \verb!\t! 	Tabulation
+\item \verb!\n! 	Nouvelle ligne
+\item \verb!\r! 	Retour chariot
+\item \verb!\s! 	Espace blanc (correspond à \verb!\t \n \r!)
+\item \verb!\S! 	Pas un espace blanc (\verb!\t \n \r!)
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\def\ftitle{Pourquoi l'un où l'autre}
+\begin{frame}[containsverbatim]{\ftitle}
+\def\blocktitle{Comparé à POSIX, PCRE permet}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item     Plus rapide
+\item     Utilisation des références arrières
+\item     Capture de toutes les occurences
+\item     Rendre un quantificateur non gourmand
+\item     Utilisation des parenthèses non capturantes
+\item     Utilisation d'une foule d'options
+\item     Utilisation d'assertions, masques conditionnels
+\item     Fonctions de callback
+\end{itemize}
+\end{block}
+
+\def\blocktitle{Mais ....}
+\begin{block}{\blocktitle}
+Nous verrons cela la semaine prochaine! (Ouf!)
+\end{block}
+
+\end{frame}
+
+
+\def\ftitle{That's all folks!}
+\begin{frame}[containsverbatim]{\ftitle}
+\def\blocktitle{Le mot de la fin}
+\begin{block}{\blocktitle}
+MOT
+\end{block}
+\end{frame}
+
+\end{document}
