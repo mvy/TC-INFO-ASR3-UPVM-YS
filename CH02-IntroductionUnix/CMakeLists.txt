@@ -1,4 +1,4 @@
-PROJECT(TC-INFO-ASR3-UPVM-YS NONE)
+PROJECT(TC-INFO-ASR3-UPVM-YS-CH02 NONE)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 INCLUDE(../UseLATEX.cmake)
@@ -6,9 +6,19 @@ INCLUDE(../UseLATEX.cmake)
 SET(LATEX_OUTPUT_PATH ../build/)
 
 ADD_LATEX_DOCUMENT(
-    presentation.tex
+    CH02-Slides.tex MANGLE_TARGET_NAMES
     INPUTS content.tex
     IMAGE_DIRS images
     DEFAULT_PDF
     )
+
+
+ADD_LATEX_DOCUMENT(
+    CH02-Handout.tex MANGLE_TARGET_NAMES
+    INPUTS content.tex
+    IMAGE_DIRS images
+    DEFAULT_PDF
+    )
+
+
 
