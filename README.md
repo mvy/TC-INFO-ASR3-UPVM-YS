@@ -10,6 +10,10 @@ alternative de ce cours est "Systèmes d'exploitation - 1ère année"
 Ce cours a été présenté à l'université Paul Verlaine de Metz pour le première
 fois au second semestre de l'année 2008-2009. 
 
+Les fichiers dans build sont accessibles aussi si vous ne souhaitez pas
+compiler vous même. Ils ne sont pas garantis d'être à jour.
+
+
 ## Licence
 
 Les sources LaTeX (Beamer) de ce cours sont disponible sous la licence MIT

@@ -1,8 +1,10 @@
 # Manuel
 
-Pour compiler le projet lancer depuis la racine : 
+Pour compiler le projet lancer depuis la racine -> ./build-all.sh
+
+Depuis un chapitre particulier: 
 
 cmake .
 make
 
-Les fichiers compilés se plaçerons dans le répertoire build/
+Les fichiers compilés se plaçerons dans le répertoire build/ à la racine.
