@@ -1,0 +1,14 @@
+PROJECT(TC-INFO-ASR3-UPVM-YS NONE)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+
+INCLUDE(../UseLATEX.cmake)
+
+SET(LATEX_OUTPUT_PATH ../build/)
+
+ADD_LATEX_DOCUMENT(
+    presentation.tex
+    INPUTS content.tex
+    IMAGE_DIRS images
+    DEFAULT_PDF
+    )
+
