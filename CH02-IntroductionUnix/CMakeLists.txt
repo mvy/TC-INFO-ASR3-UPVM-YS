@@ -5,9 +5,10 @@ INCLUDE(../UseLATEX.cmake)
 
 SET(LATEX_OUTPUT_PATH ../build/)
 
+
 ADD_LATEX_DOCUMENT(
     CH02-Slides.tex MANGLE_TARGET_NAMES
-    INPUTS content.tex
+    INPUTS CH02-Content.tex
     IMAGE_DIRS images
     DEFAULT_PDF
     )
@@ -15,7 +16,7 @@ ADD_LATEX_DOCUMENT(
 
 ADD_LATEX_DOCUMENT(
     CH02-Handout.tex MANGLE_TARGET_NAMES
-    INPUTS content.tex
+    INPUTS CH02-Content.tex
     IMAGE_DIRS images
     DEFAULT_PDF
     )
