@@ -1,0 +1,361 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Introduction aux Systèmes d'exploitation  %%
+%%   * Historique                            %%
+%%   * Principes fondamentaux                %%
+%%   * Grandes classes de systèmes           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Systèmes d'exploitation}
+\subtitle{RegExp: Higher and Deeper}
+
+\author{Yves \textsc{Stadler}}\institute{Codasystem, UPV-M}
+
+\date{\today}
+
+\begin{document}
+
+
+%%
+% Page de Titre
+%%
+\begin{frame}
+\titlepage
+\end{frame}
+
+\def\ftitle{Objectifs du chapitre}
+\begin{frame}[containsverbatim]{\ftitle}
+\def\blocktitle{Objectifs}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Savoir quelles commandes peuvent-être utilisées avec des regexp.
+\item Savoir utiliser la capture et la \textit{backreference}
+\item Contrôler sa gourmandise
+\item Rechercher toutes les occurrences
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Commandes}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{POSIX}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item ereg (macthing)
+\item eregi (matching / case insensitive)
+\item ereg\_replace (replacement)
+\item eregi\_replace (case insensitive replacement)
+\item split (découpe)
+\item spliti (découpe insensible a la casse)
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{PCRE}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item preg\_grep — Retourne un tableau avec les résultats de la recherche
+\item preg\_match — Une seule occurence
+\item preg\_match\_all — Toutes occurences
+\item preg\_replace — rechercher et remplacer
+\item preg\_replace\_callback — Recherche, remplace en utilisant une fonction
+\item preg\_split — Eclatement de chaine
+\end{itemize}
+\end{block}
+\end{frame}
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Capture}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{La parenthèse}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Utiliser une parenthèse créér une pseudo-variable \verb!\i! qui stocke la valeur du sous-motif. %$
+\end{itemize}
+\end{block}0
+%_________________________________________
+\def\blocktitle{Exemple}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb![0-9]{2}-[0-9]{2}-[0-9]{4}! désigne une chaine de type date JJ-MM-AAAA
+\item \verb!([0-9]{2})-([0-9]{2})-([0-9]{4})! 
+\item \verb!\1! prend la valeur de JJ
+\item \verb!\2! prend la valeur de MM
+\item \verb!\3! prend la valeur de AAAA %$
+%\item En PCRE \verb!$i! devient \verb!\i! %$
+%\item Utile pour le remplacement dans la partie motif de remplacement.
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{frame}[containsverbatim]{\ftitle}
+\def\blocktitle{Exemple}
+%_________________________________________
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb!(.*)\1! représente les phrases en deux parties identiques ("pouetpouet", "haha", "toto")
+\item \verb!t([aeiou])t\1! désigne toutes les chaînes tXtY ou X=Y= une voyelle
+\item \verb!0[1-6]([0-9]{2}){2}\1\2! désigne les numéros de téléphones qui se terminent par deux groupes de 4 chiffres identiques
+(06 08 12 08 12, 03 87 70 87 70, ...)
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Non capturante, groupements nommés, backreference}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{PCRE only!}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item On peut annuler la capture avec les PCRE (et sans doute aussi dans POSIX étendu)
+\item \verb!(?:...)!
+\item Pour utiliser une backreference, il faut au moins le nombre de parenthèses requis.
+\end{itemize}
+\end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%|||||||||||||||||||||||||||||||||||||||||
+\def\ftitle{La gourmandise}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Analysons ceci :}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item La RE : \verb!.*A.*!
+\item Et la phrase : "zAzAzAz"
+\item Comment va réagir la correspondance?
+\end{itemize}
+\end{block}
+%_________________________________________
+\def\blocktitle{Possibilités}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item .* = z | A | .* = zAzAz
+\item .* = zAz | A | .* = zAz
+\item .* = zAzAz | A | .* = zAz
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Est-un vilain défaut}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Dans les RE POSIX, les quantifieurs sont toujours gourmands (Plus c'est long... plus c'est bon)
+\item Avec les PCRE, les quantifieurs ne sont gourmands que par défaut.
+\end{itemize}
+\end{block}
+
+%_________________________________________
+\def\blocktitle{Cure de désintox}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Pour supprimer la gourmandise d'un opérateur on utilise ?
+\item \verb!.*?A.*!
+\item Capture : .* = z | A | .* = zAzAz
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Avec PHP}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Fonction ereg()
+\item \verb!ereg('<a href=(.*)>', $text, $out);!
+\item \begin{verbatim}$text="Une phrase avec <a href="http://www.codasystem
+.com/mapage.php"> que je veux pouvoir matcher</a> mais pas 
+le reste"! \end{verbatim}%$
+\item out contiendra le résultat de la capture
+\item POSIX: 'http://www.codasystem.com/mapage.php"> que je veux pouvoir matcher</a'
+\end{itemize}
+\end{block}
+
+%_________________________________________
+\def\blocktitle{PCRE}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Fonction preg\_match()
+\item \verb!preg_match('<a href=(.*?)>', $text, $out);!
+\item out contiendra le résultat de la capture
+\item PCRE: "http://www.codasystem.com/mapage.php"
+\end{itemize}
+\end{block}
+\end{frame}
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Assertions}
+
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Assertions simples}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb!\b! Limite d'un mot
+\item \verb!\B! pas limite d'un mot
+\item \verb!^! début de phrase
+\item \verb!$! fin de phrase %$
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Lookahead assertions}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item (?=...), réussit si la regexp match l'expression à cette position.
+\item (?!...), l'inverse
+\item L'assertion laisse le curseur de lecture là où l'on commence a tester l'assertion (c'est à dire que si l'assertion est vraie on va relire depuis le début du groupe assertif)
+\end{itemize}
+\end{block}
+%_________________________________________
+\def\blocktitle{Exemple}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Matcher les fichiers et leurs extensions
+\item \verb!.*[.].*$! %$
+\item Mais sans les .bat
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Solutions}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Ce qui ne marche pas}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb!.*[.][^b].*$!
+\item \verb!.*[.]([^b]..|.[^a].|..[^t])$!
+\item \verb!.*[.]([^b].?.?|.[^a]?.?|..?[^t]?)$! %$
+\end{itemize}
+\end{block}
+%_________________________________________
+\def\blocktitle{Solution avec lookahead}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb^.*[.](?!bat$).*$^
+\item Si après le . il n'y a pas bat, on continue.
+\item Le .* après l'assertion matchera l'extension (la lecture reste bloquée au début de l'assertion/)
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Un pas en avant, trois pas en arrière!}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item (?<=...), réussit si la regexp match l'expression en arrière de cette position.
+\item (?<!...), réussit si ne match pas (en arrière)
+\end{itemize}
+\end{block}
+\end{frame}
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Masques conditionnels}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Syntaxe}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb!(?(assertion ou backreference) motif si vrai | motif sur faux)!
+\end{itemize}
+\end{block}
+%_________________________________________
+\def\blocktitle{Exemple}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Si je détecte From dans un mail, je traite un motif d'adresse email
+\item Si je détecte Subject, je traite une suite de mots
+\end{itemize}
+\end{block}
+\end{frame}
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Failing attempts}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Capture vide, et groupe non participant}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb!(q?)b\1! macth b 
+\item q? macth le vide, le groupe capture vide, b match b, \verb!1! doit matcher vide c'est ok.
+\item \verb!(q)?b\1! ne match pas b
+\item (q) match le vide (optionnel), le groupe ne capture rien, car il ne participe pas à l'expression. b match b, \verb!\1! va échouer car le groupe n'a pas participé.
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Répetitions}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Que se passe-t-il pour la capture si}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item J'utilise \verb!azerty([0-9])+!
+\item La capture ([0-9]) risque d'intervenir plusieurs fois.
+\item \verb!\1! ne se souviendra que de la dernière capture.
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Forward reference}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Utilisons une capture avant de la définir}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Fonctionne avec PCRE
+\item \verb!(\2deux|(un))+! va matcher : unundeux
+\item Au début, \verb!\2! échoue a matcher u, le seconde alternative "un" réussi (un est capturé)
+\item Deuxième itération \verb!\2! match "un" et deux match deux.
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Quelques options}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{PCRE}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item On précise l'option après le \verb!#! final.
+\item i : case insensitive
+\item s : . macth aussi le retour à la ligne
+\item U : ungreedy par défaut
+\item x : permet d'écrire ses motifs sur plusieurs lignes, avec des commentaires (\verb!#!, il faut utiliser un autre délimiteur (ex. /))
+\end{itemize}
+\end{block}
+\end{frame}
+\end{document}
