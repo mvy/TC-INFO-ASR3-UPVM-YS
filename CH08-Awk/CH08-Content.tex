@@ -1,0 +1,372 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Introduction aux Systèmes d'exploitation  %%
+%%   * Historique                            %%
+%%   * Principes fondamentaux                %%
+%%   * Grandes classes de systèmes           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Systèmes d'exploitation}
+\subtitle{AWK}
+
+\author{Yves \textsc{Stadler}}\institute{Codasystem, UPV-M}
+
+\date{\today}
+
+\begin{document}
+
+
+%%
+% Page de Titre
+%%
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Historique}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Vocabulaire}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item 1977, langage de programmation, UNIX
+\item Alfred V. Aho, Peter J. Weinberger et Brian W. Kernighan.
+\item Créer pour remplacer grep et sed.
+\item Dispose d'une grande souplesse
+\item Plus de possibilité "programmative" que sed.
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Premiers pas}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Appel}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb|#!/usr/bin/awk -f|
+\item \verb!awk -f fscript < finput!
+\item \verb!ls | awk -f fscript!
+\end{itemize}
+\end{block}
+\end{frame}
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Terminologie}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Enregistrement}
+\begin{block}{\blocktitle}
+\begin{verbatim}
+Fichier := record \n record ... \n record \n EOF;
+\end{verbatim}
+\end{block}
+%_________________________________________
+\def\blocktitle{Champs}
+\begin{block}{\blocktitle}
+\begin{verbatim}
+record := field SEP field ... SEP field SEP field \n;
+\end{verbatim}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Terminologie}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Premières lignes}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Le dièse est commentaire
+\item \verb!Condition { actions }!
+\item ; ou \verb!\n! pour séparer les actions
+\item \begin{verbatim}Condition {
+action1
+action2; action3
+}
+\end{verbatim}
+\item \begin{verbatim}Condition \
+{
+actions
+}
+\end{verbatim}
+
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Le début}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{BEGIN}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Condition : \verb!BEGIN { actions }!
+\item S'exécute avant le début de traitement du fichier
+\item Pratique pour initialiser les variables, ou afficher un message de bienvenue
+\item \verb!BEGIN { print "Debut du script AWK" }!
+\end{itemize}
+\end{block}
+%_________________________________________
+\def\blocktitle{END}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Condition : \verb!END { actions }!
+\item S'exécute après le traitement du fichier
+\item Pratique pour afficher les résultats, ou un message de fin
+\item \verb!END { print "Fin du script AWK" }!
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Variables}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Typage}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Comme bash, awk ne connait pas de type
+\item \verb!variable_1 = "Bonjour"!
+\item \verb!variable_1 = 1!
+\item Le type est interprété en fonction du contexte
+\end{itemize}
+\end{block}
+
+%_________________________________________
+\def\blocktitle{Tableau}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Comme en bash : \verb!tab[0] = "Bonjour"!
+\item \verb!tab["item1"] = 1!
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Variables spéciales}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Billet vert}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb!$0! désigne toute la ligne
+\item \verb!$i! désigne le ième champ de la ligne
+\item Séparateur : espace, tabulation (Peut être modifier)
+\item \verb! n = 2; print $n! affiche le champ 2%$
+\end{itemize}
+\end{block}
+%_________________________________________
+\def\blocktitle{Variables globales}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb!$NF! nombre de champ sur la ligne (number of fields)%$
+\item \verb!$FS! contient l'expression pour les séparateurs de champs (peut être une RE)%$
+\item \verb!$NR! nombre de ligne (number of records)%$
+\item \verb!$ORS! séparateur de ligne (\verb!\n! par défaut)%$
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Exemples}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Exemples}
+\begin{block}{\blocktitle}
+\begin{verbatim}
+BEGIN { print "Le script qui affiche le premier champ" }
+{ print $1 }
+END { print "Le script est fini" }
+
+BEGIN { print "Le script qui affiche le nombre de 
+ligne sans utiliser $NR"
+total = 0 }
+{ total = total + 1 }
+END { print "Le total de lignes est " $NR " ou " total }
+\end{verbatim}%$
+\end{block}
+\end{frame}
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Conditions}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Opérateurs}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item == != <= >= < >
+\item \&\& ||
+\item \verb!+ - / * % ^!
+\item \verb!+= -= /= *= %/ ++ --!
+\end{itemize}
+\end{block}
+%_________________________________________
+\def\blocktitle{Motifs}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb!/regexp/ { actions }!
+\item \verb!var ~ /regexep/ { actions }!
+\item \verb|var !~ /regexp/ { actions }|
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Exemples}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Script 1}
+\begin{block}{\blocktitle}
+\begin{verbatim}
+BEGIN { print "Le script qui compte le nombre
+ de ligne contenant des nombres"
+total = 0 }
+/[0-9]+/ { total = total + 1 }
+END { print "Le total est " total }
+\end{verbatim}
+
+\end{block}
+%_________________________________________
+\def\blocktitle{Script 2}
+\begin{block}{\blocktitle}
+\begin{verbatim}
+BEGIN { print "Le script qui compte le nombre
+ de ligne dont le champ 1 est un nombres"
+total = 0 }
+$1 ~ /[0-9]+/ { total = total + 1 }
+END { print "Le total est " total }
+\end{verbatim}%$
+
+\end{block}
+\end{frame}
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Fonctions}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Arithmetiques}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item sqrt(x) 	racine carrée
+\item atan2(y,x)  	 arctangente de x/y en (radians)
+\item cos(x) 	cosinus (radians)
+\item sin(x) 	sinus (radians)
+\item exp(x) 	exponentielle $e^{x}$
+\item int(x) 	valeur entière
+\item log(x) 	logarithme
+\item rand() 	nombre aléatoire entre 0 et 1
+\item srand(x) 	initialisation de rand
+\end{itemize}
+\end{block}
+
+%_________________________________________
+\def\blocktitle{Affichage}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item print
+\item printf()
+\end{itemize}
+\end{block}
+\end{frame}
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Boucles, etc...}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Si le père noel exite alors ...}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \begin{verbatim}
+if (condition)
+	action
+\end{verbatim}
+\item \begin{verbatim}
+if (condition) {
+	actions
+} [else {
+	actions
+}]
+\end{verbatim}
+\end{itemize}
+\end{block}
+%_________________________________________
+\def\blocktitle{Pour...}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \begin{verbatim}
+for (start; condition; step) {
+	actions
+} #C-like
+\end{verbatim}
+\item \begin{verbatim}
+for (var in tableau) {
+	actions
+} #Bash-like
+\end{verbatim}
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Introduction}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Vocabulaire}
+\begin{block}{\blocktitle}
+\begin{verbatim}
+ awk 'BEGIN { print "Mémorisation de votre fichier " FILENAME }
+                 {memfile [NR] = $0 }
+           END   { for ( i = NR ; i >= 1 ; i-- ) {
+                    print i ":" memfile[i]
+                    }
+	          print "Fin"
+                 } ' fichier 
+\end{verbatim}%$
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Tant qu'il y aura des ombres}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{While}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \begin{verbatim}
+while (condition)
+{
+	actions
+}
+\end{verbatim}
+\item \begin{verbatim}
+do
+{
+	actions
+} while (condition)
+\end{verbatim}
+\end{itemize}
+\end{block}
+%_________________________________________
+\def\blocktitle{Contrôle}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item break;
+\item continue;
+\end{itemize}
+\end{block}
+\end{frame}
+
+\end{document}
