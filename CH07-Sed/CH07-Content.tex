@@ -1,0 +1,313 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Introduction aux Systèmes d'exploitation  %%
+%%   * Historique                            %%
+%%   * Principes fondamentaux                %%
+%%   * Grandes classes de systèmes           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Systèmes d'exploitation}
+\subtitle{Stream EDitor}
+
+\author{Yves \textsc{Stadler}}\institute{Codasystem, UPV-M}
+
+\date{\today}
+
+\begin{document}
+
+
+%%
+% Page de Titre
+%%
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Qu'est-ce que SED}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{SED}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item SED = Stream EDitor
+\item Utilitaire Unix
+\item Manipulation ligne par ligne du texte
+\item Utilise des expressions regulières
+\end{itemize}
+\end{block}
+%_________________________________________
+\def\blocktitle{Exemple typique}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Remplacement : \verb!sed -e 's/Ancien/Nouveau/g' ne > ns!
+\item "Substitue 'Nouveau' à 'Ancien' en utilisant ne comme input, et ns en output"
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Histoire}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Ed}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Basé sur l'éditeur ed, toujours présent actuellement
+\item À la base, ed se voit adjoindre une fonction pour travailler son flux d'entrée
+\item "g/re/p" (global/regular expression/print)
+\item Donnera grep
+\item Puis sed
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Syntaxe}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Ligne de commande}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb!sed -e 'actions' input!
+\item On préfère souvent rediriger la sortie
+\end{itemize}
+\end{block}
+%_________________________________________
+\def\blocktitle{Actions}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Remplacement
+\item Effacement
+\item Actions conditionnelles
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Syntaxe complète}
+\begin{block}{\blocktitle}\begin{verbatim}
+sed [-options] [commande] [<fichier(s)>]
+sed [-n [-e commande] [-f script] [-i[.extension]] 
+[l [cesure]] rsu] [<commande>] [<fichier(s)>]
+\end{verbatim}
+\end{block}
+%_________________________________________
+\def\blocktitle{Commandes}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb/[addr[,addr]][!]cmd[args]/
+\item \begin{verbatim}[addr[,addr]]{
+cmd1
+cmd2
+cmd3
+\end{verbatim}
+\item \verb![addr[,addr]]{cmd1;cmd2;cmd3}!
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Affichage/Non affichage}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item L'option \verb!-n ! force sed a ne rien afficher sur stdout
+\item On va pouvoir utiliser p pour forcer l'affichage dans des commandes sed
+\end{itemize}
+\end{block}
+%_________________________________________
+\def\blocktitle{Sélection de ligne}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Afficher la troisième ligne : \verb!sed -n 3p fichier!
+\item Afficher un intervalle de ligne (de 7 à 10) : \verb!sed -n '7,3 p' fichier!
+\item Afficher un groupe de ligne (toutes les 2 lignes à partir de la 3): \verb!sed -n 3~2p fichier!
+\item Afficher la dernière ligne d'un fichier : \verb!sed -n '$ p' fichier! %$
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Ma regexp me manque!!}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Sélection (et affichage) de ligne par motif
+\item \verb!sed -n '/motif/'! affiche toutes les lignes ou apparait le motif.
+\item \verb!\!\verb!#exp#! change le délimteur pour \#
+\item \verb!/begin/,/end/ p ! : du motif begin au motif end.
+\item \verb!num,/motif/! \verb!/motif/,num! : de la ligne num au motif (et inverse).
+\end{itemize}
+\end{block}
+\end{frame}
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Options}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Paramètres}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb!-e cmd! exécution d'une commande (peut-etre utilisé plusieurs fois
+\item \verb!-n! silencieux
+\item \verb!-i[Suffixe]! sauvegarde le fichier dans fichier.Suffixe et écrase le precédent
+\item \verb!-r! Utilisation de RE étendue.
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Fichiers de scripts}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Commentaires}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb!#Commentaire!
+\item \verb!#n! au début : force l'option -n
+\end{itemize}
+\end{block}
+
+
+%_________________________________________
+\def\blocktitle{Commandes}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item q : quitter
+\item d : delete
+\item p : print
+\item n : next line
+\item Accolades : groupement de commandes
+\item s : substitution
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Exemples}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Supprimer les lignes contenant "Vol pour Madrid"
+\item /Vol pour Madrid/d
+\item Afficher la ligne suivant la 4e.
+\item 4 {n;p}
+\item Afficher la quatrième ligne et quitter
+\item 4 {n;q}
+\end{itemize}
+\end{block}
+\end{frame}
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{La substitution}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Substitution simple}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item s/motif/motif2/
+\item motif est une 'basic regular expression' (backslash de |)
+\item On peut mettre des backreference dans motif2 (backslash parenthèse)
+\item \& représente le motif en correspondance.
+\end{itemize}
+\end{block}
+%_________________________________________
+\def\blocktitle{Substitution composée}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item s/motif/motif2/drapeaux
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Les drapeaux}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item g : global (toutes les occurences sur la ligne)
+\item N (nombre) : la Nième occurence
+\item p : print (affiche la ligne remplacée)
+\item w : write (enregistre la ligne dans un fichier)
+\item e : evaluate (fait interpréter une commande par le shell)
+\item I : case insensitive
+\item M : compliqué (pour le traitement de plusieurs lignes)
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Exemples}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Substituer les lignes contenant "Vol pour Rio" par Annulé
+\item s/Vol pour Rio/Annulé/
+\item Ecrire l'heure à la place du nom du vol
+\item s/Vol pour Rio/date/e
+\item Trouver toutes les instances de Chapitre, quelque soit sa casse, et remplacer par CH
+\item s/Chapitre/CH/gpi
+\end{itemize}
+\end{block}
+\end{frame}
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Substitution}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{y!}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb!y/AEIOU/aeiou/!
+\item Remplace un caractère de la première chaine, par celui correspondant dans la seconde.
+\end{itemize}
+\end{block}
+%_________________________________________
+\def\blocktitle{Autres commandes}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item a\\text : ajout de texte (après la mise en correspondance)
+\item i\\text : ajout de texte (avant la mise en correspondance)
+\item c\\text : échange la/les lignes(s) en correspondance
+\item r fichier : lit un fichier
+\item w fichier : écrit la ligne dans le fichier.
+\item = : numéro de ligne
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Exemples}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Ajouter Vol annulé a la suite du nom de vol
+\item /Vol pour Rio/a Vol annulé
+\item Après la 5e ligne
+\item 5a Vol Annulée 
+\end{itemize}
+\end{block}
+\end{frame}
+
+\end{document}
