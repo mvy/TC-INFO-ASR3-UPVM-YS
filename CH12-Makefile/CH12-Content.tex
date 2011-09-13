@@ -1,0 +1,407 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Introduction aux Systèmes d'exploitation  %%
+%%   * Historique                            %%
+%%   * Principes fondamentaux                %%
+%%   * Grandes classes de systèmes           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Makefile}
+\subtitle{Comment automatiser la chaine de compilation}
+
+\author{Yves \textsc{Stadler}}\institute{Codasystem, UPV-M}
+
+\date{\today}
+
+\begin{document}
+
+
+%%
+% Page de Titre
+%%
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Introduction}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Historique et description}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Il existe de multiples utilitaires makefile.
+\item Ce n'est pas normalisé
+\item Nous parlerons de GNU make.
+\end{itemize}
+\end{block}
+
+
+%_________________________________________
+\def\blocktitle{Utilité}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Permet d'exécuter des commandes séquentiellement
+\item A la différence des scripts, make n'exécute les commandes que si nécessaire
+\item Make facilite la compilation et les éditions de liens
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Introduction}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Historique}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Docteur Stuart Feldman, en 1977.
+\item Bell Labs
+\item Deux principaux, BSD et GNU
+\item Maintenant pour les grands projets, on utilise des outils comme autoconf
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Fonctionnement}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Règles}
+\begin{block}{\blocktitle}
+\begin{verbatim}
+cible1: dependance1 dependance2 ...
+  commande1
+  commande2
+  ...
+  
+cible2: ...
+  ...
+\end{verbatim}
+\end{block}
+
+
+%_________________________________________
+\def\blocktitle{Projet}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Fichiers des commandes mathématiques
+\item lmath.c lmath.h main.c
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{lmath.h}
+\begin{block}{\blocktitle}
+\begin{verbatim}
+/* Fonction mathématique : addition */
+int ajoute(int a, int b);
+/* Fonction mathématique : multiplication */
+int multiplie(int a, int b);
+/* Fonction mathématique : soustraction */
+int soustrait(int a, int b);
+/* Fonction mathématique : division */
+int divise(int a, int b);
+\end{verbatim}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Introduction}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{lmath.c}
+\begin{block}{\blocktitle}
+\begin{verbatim}
+/* Corps de la fonction addition */
+int addition(int a, int b) {
+  return a + b;
+}
+
+/* Corps de la fonction multiplication */
+int multiplie(int a, int b) {
+  return a * b;
+}
+
+/* Corps de la fonction soustraction */
+int soustrait(int a, int b) {
+  return a - b;
+}
+
+/* Corps de la fonction division */
+int divise(int a, int b) {
+  return a / b;
+}
+\end{verbatim}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{main.c}
+\begin{block}{\blocktitle}
+\begin{verbatim}
+#include "lmath.h"
+
+int main(void) {
+  addition(1, 1);
+  multiplication(addition(1,3), 5);
+  division(9, 3);
+}
+\end{verbatim}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Première règles}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Chaîne}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Compiler lmath.c si on a modifier le corps d'une fonction en fichier .o (sans édition de lien)
+\item Compiler main.c sans édition de lien si modifié
+\item Faire l'édition de lien entre les deux fichiers objets
+\begin{verbatim}
+gcc -c -o lmath.o lmath.h
+gcc -c -o main.o main.c
+gcc -o executable main.o lmath.o
+\end{verbatim}
+\end{itemize}
+\end{block}
+
+%_________________________________________
+\def\blocktitle{Makefile de base}
+\begin{block}{\blocktitle}
+main: lmath.o main.o
+  gcc -o executable main.o lmath.o
+  
+lmath.o: lmath.c
+  gcc -c -o lmath.o lmath.h
+  
+main.o: main.c lmath.h
+  gcc -c -o main.o main.c
+  
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Explication}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item La première règle est la règle par défaut
+\item Pour construire la cible main (nom symbolique) nous avons besoin des fichiers lmath.o et main.o
+\item Si on a ces deux fichiers, on peut exécuter la commande en dessous
+\item Si il manque un de ces fichiers, on va chercher la règle correspondante
+\item Si lmath.o n'existe pas, on a une règle nommée lmath.o
+\item Si lmath.o existe, on vérifie quand même la règle, car lmath.o nécéssite lmath.c. Est-ce que lmath.c à été modifié?
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Problèmes}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Les fichiers temporaires restent sur le disque
+\item On ne peut pas forcer une génération complète du projet
+\item On ne peut rien personnaliser
+\end{itemize}
+\end{block}
+
+
+%_________________________________________
+\def\blocktitle{Makefile avancé}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Règle dites "standards"
+\item all : regroupe toutes les dépendances
+\item clean : supprime les fichiers intermédiaires
+\item mrproper : supprime tout ce qui peut-être regénéré
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{makefile}
+\begin{block}{\blocktitle}
+\begin{verbatim}
+all: main
+  #vide
+  
+main: lmath.o main.o
+  gcc -o executable main.o lmath.o
+  
+lmath.o: lmath.c
+  gcc -c -o lmath.o lmath.h
+  
+main.o: main.c lmath.h
+  gcc -c -o main.o main.c
+
+clean:
+  rm -rf *.o
+  
+mrproper:
+  rm -rf executable
+ 
+\end{verbatim}
+\end{block}
+\end{frame}
+
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Encore plus}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Variables}
+\begin{block}{\blocktitle}
+\begin{verbatim}
+#Compilateur
+CC=gcc
+#Option de compilation
+CFLAGS=-Wall
+#Option de linkage
+LDFLAGS=-lm
+#Nom de l'exécutable
+EXEC=main
+
+all: $(EXEC)
+  #vide
+  
+main: lmath.o main.o
+  $(CC) -o executable main.o lmath.o $(LDFLAGS)
+  
+
+ 
+\end{verbatim}%$
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Introduction}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Lexical}
+\begin{block}{\blocktitle}
+\begin{verbatim}
+lmath.o: lmath.c
+  $(CC) -c -o lmath.o lmath.h $(CFLAGS)
+  
+main.o: main.c lmath.h
+  $(CC) -c -o main.o main.c $(CFLAGS)
+
+clean:
+  rm -rf *.o
+  
+mrproper:
+  rm -rf executable
+\end{verbatim}
+\end{block}
+\end{frame}
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Variable propre a makefile}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb!$@! est le nom de la cible en cours
+\item \verb!$@! est le nom du fichier sans extension
+\item \verb!$<! est le nom de la première dépendance
+\item \verb!$^! est le nom de toutes les dépendances
+\item \verb!$?! est le nom des dépendances plus récentes que la cible
+\end{itemize}%$
+\end{block}
+\end{frame}
+
+
+%_________________________________________
+\def\blocktitle{On peut écrire}
+\begin{block}{\blocktitle}
+\begin{verbatim}
+main: lmath.o main.o
+  $(CC) -o $@ $^ $(LDFLAGS)
+  
+\end{verbatim}%$
+Va compiler avec gcc -o nom\_de\_la\_cible dépendances flags\_de\_compilation
+\end{block}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Vocabulaire}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Si on regarde notre makefile on verra qu'il y a des règles qui fonctionnent de la même manière
+\begin{verbatim}
+lmath.o: lmath.c
+  $(CC) -c -o lmath.o lmath.h $(CFLAGS)
+  
+main.o: main.c lmath.h
+  $(CC) -c -o main.o main.c $(CFLAGS)
+  
+\end{verbatim}
+\item On peut généraliser
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Introduction}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Règle globale}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \begin{verbatim}
+%.o:%.c
+  $(CC) -c -o $@ $< $(CFLAGS)
+  
+\end{verbatim}
+\item Cette règle compile tout les fichiers .o de la même manière. (gcc -c -o nom\_de\_la\_cible nom\_du\_fichier.c flags)
+\item Attention main.o ne dépend plus de lmath.h
+\item \begin{verbatim}
+main.o: lmath.h
+\end{verbatim}
+\end{itemize}
+
+\end{block}
+\end{frame}
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Petites substitutions}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item \verb!SRC=main.c lmath.c! \verb!OBJ=$(SRC:.c=.o)!
+\item \verb!src=$(wildcard *.C)!
+\end{itemize}
+\end{block}
+\end{frame}
+
+\end{document}
