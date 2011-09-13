@@ -1,4 +1,7 @@
-\documentclass[french, 10pt]{beamer}
+\documentclass[french, 10pt, handout]{beamer}
+\usepackage{pgfpages}
+\pgfpagesuselayout{4 on 1}[a4paper, landscape, border shrink=5mm]
+
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -11,7 +14,8 @@
 \usepackage{tikz}
 \usetikzlibrary{arrows,shapes}
 
-\usetheme{Frankfurt}
+%\usetheme{Frankfurt}
+\usetheme{Pittsburgh}
 
 \usefonttheme{professionalfonts}
 \setbeamercovered{transparent}
@@ -19,5 +23,5 @@
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{footline}[text line]{\insertframenumber/\inserttotalframenumber}
 
-\input{CH09-Content}
+\input{CH10-Content}
 

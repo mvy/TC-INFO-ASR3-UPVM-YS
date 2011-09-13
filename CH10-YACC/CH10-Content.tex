@@ -1,0 +1,316 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Introduction aux Systèmes d'exploitation  %%
+%%   * Historique                            %%
+%%   * Principes fondamentaux                %%
+%%   * Grandes classes de systèmes           %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Systèmes d'exploitation}
+\subtitle{Lex et Yacc : partie II (Yacc)}
+
+\author{Yves \textsc{Stadler}}\institute{Codasystem, UPV-M}
+
+\date{\today}
+
+\begin{document}
+
+
+%%
+% Page de Titre
+%%
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Introduction}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\includegraphics[width=\textwidth]{images/yak.png}
+\end{frame}
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Introduction}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Yet Another Compiler Compiler}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Analyseur grammatical
+\end{itemize}
+\end{block}
+%_________________________________________
+\def\blocktitle{Historique}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Stephen C. Johnson at AT\&T 
+\item Maintenant nommé bison
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Introduction}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Principe}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Décrire des tokens (éléments de langages)
+\item Écire une liste de règles qui décrivent un langage (Comment s'organisent les tokens)
+\item Générer un programme qui va comprendre un langage
+\item Une calculatrice comprends le langage des expressions mathématiques
+\item Le fichier .yy donnera une source dans le langage choisi
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Structure d'un fichier YACC}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Général}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Pareil qu'un fichier Lex
+\item \begin{verbatim}
+Definition section
+%%
+Rule section
+%%
+Additionnal code
+\end{verbatim}
+\item Le fichier aura généralement l'extension .yy
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Definitions}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Includes comme en lex (\verb!%{ ... %}!)
+\item Définition de tokens
+\item Un token est un élément de syntaxe par exemple PLUS (\verb!%token PLUS!)
+\item Un token ne réprésente rien! Il n'a aucune valeur! Il a juste un sens!
+\item Exemple le token PLUS ne correspond pas à la chaîne "+"
+\item Le token PLUS correspond au sens de l'addition (On expliquera son contexte d'utilisation dans la section suivante)
+\item Un axiome (\verb!%axiom start!) est le nom de l'axiome de la grammaire. Par défaut c'est la première règle
+\item Supposons que nous avons les tokens suivants : NOMBRE PLUS  MOINS FOIS  DIVISE  PUISSANCE
+
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Productions}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Donner un sens à nos token
+\item \begin{verbatim}
+notion_grammaticale:
+	  notionOuToken1 {action sémantique}
+	| notionOuToken2 {action sémantique}
+	...
+	| notionOuToken3 {action sémantique}
+	;
+\end{verbatim}
+\item NotionOuTokeni est soit une autre production/notion de cette section, soit un token de la section précédente. (Peut être composé)
+\item Les actions sont effectuées lorsque YACC réussi à donner un sens à le notionOuToken qui précède.
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Exemple : expressions mathématiques simples}
+\begin{block}{\blocktitle}
+\begin{verbatim}
+EXPRESSION:   NOMBRE
+			| EXPRESSION PLUS EXPRESSION {//calcul de l'addition}
+			| EXPRESSION MOINS EXPRESION {//calcul de l'addition}
+			| EXPRESSION FOIS EXPRESION {//calcul de l'addition}
+			| EXPRESSION DIVISE EXPRESION {//calcul de l'addition}
+			;
+\end{verbatim}
+\end{block}
+
+%_________________________________________
+\def\blocktitle{Lecture}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item On dit qu'une expression est décrite par :
+\item Une addition de deux autres expressions
+\item Une soustraction de deux expressions
+\item Une multiplication de deux expressions
+\item Une division de deux expressions
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Associativité}
+\begin{block}{\blocktitle}
+Dans notre cas EXPRESION PLUS EXPRESSION il y a ambiguité, YACC ne sait pas s'il doit chercher d'abord la première expression ou d'abord la seconde.
+\begin{itemize}
+\item On résoud le problème en précisant l'associativité de PLUS
+\item \verb!%left PLUS! va dire que l'on commence par la gauche (par exemple pour une addition)
+\item \verb!%right PUISSANCE! va dire que l'on commence par évaluer a right (par exemple pour une puissance)
+\item On peut rendre un token non associatif : \verb!%nonassoc EGAL!
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Précédence}
+\begin{block}{\blocktitle}
+YACC ne sait pas non plus dans une expression composée (ex: 2 + 3 * 5) s'il doit commencer d'abord par la règle PLUS ou la règle FOIS
+\begin{itemize}
+\item On indique grâce à \verb!%left et %right! la priorité des opérateurs
+\item Première ligne moins prioritaire
+\item Dernière ligne plus prioritaire
+\begin{verbatim}
+%left PLUS MOINS
+%left FOIS DIVISE
+\end{verbatim}
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Code additionnel}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item On peut comme en lex y définir certaines fonctions dont
+\item \begin{verbatim}
+int yyerror(char *s) {
+  printf("%s\n",s);
+}
+
+int main(void) {
+  yyparse();
+}
+\end{verbatim}
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\def\ftitle{Lex et YACC}
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Principe}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item Utiliser la reconnaissance grammaticale pour donner un sens à l'analyse lexicale.
+\item Exemple créer un programme C qui va pouvoir interpréter nos expressions mathématique et calculer le résultat
+\item Variable commune : yylval de type YYSTYPE (on pourra faire un define YYSTYPE double par exemple.)
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Exmple : fichier lex}
+\begin{block}{\blocktitle}
+\begin{verbatim}
+SPACE    [ \t]+
+DIGIT   [0-9]
+INT    {DIGIT}+
+FLOAT    {DIGIT}("."{DIGIT})?
+%%
+{SPACE}  { /* Ignorés */ }
+{FLOAT}		{ yylval=atof(yytext);
+      		 return(NOMBRE);
+    		}
+"+"   return(PLUS);
+"-"   return(MOINS);
+"*"   return(FOIS);
+"/"   return(DIVISE);
+"\n"  return(FIN);
+\end{verbatim}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Exemple : fichier yacc}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item On a déjà vu comment définir les tokens et leurs priorités
+\item On choisit \verb!%axiom LIGNE!
+\item On met aussi les règles que l'on a choisis
+\item Comment faire maintenant pour calculer quelque chose?
+\end{itemize}
+
+%_________________________________________
+\def\blocktitle{Variable}
+\begin{block}{\blocktitle}
+\begin{itemize}
+\item notion: TOKEN1 TOKEN2 TOKEN3
+\item \verb!$$! représente la valeur de la notion
+\item \verb!$i! représente la valeur du token i %$
+\item \verb!EXPRESSION : NOMBRE {$$=$1}! expression va prendre la valeur du token (calculer par la reconnaissance lex)
+\item \verb!EXPRESSION : EXPRESSION PLUS EXPRESSION {$$=$1 + $2}! expression va prendre la valeur de la 1er plus la seconde expression (Calculés par une autre notion YACC)%$
+\end{itemize}
+\end{block}
+\end{block}
+\end{frame}
+
+
+%!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+\begin{frame}[containsverbatim]{\ftitle}
+%_________________________________________
+\def\blocktitle{Exemple}
+\begin{block}{\blocktitle}
+\begin{verbatim}
+EXPRESSION:	  NOMBRE {$$=$1}
+			| EXPRESSION PLUS EXPRESSION {$$=$1+$3}
+			| EXPRESSION MOINS EXPRESSION {$$=$1-$3}
+			| EXPRESSION DIVISE EXPRESSION {$$=$1/$3}
+			| EXPRESSION FOIS EXPRESSION {$$=$1*$3}			
+			;
+
+LIGNE	:  LIGNE FIN {printf("Le resultat est %f\n", $1);}
+		| FIN
+		| error FIN {yyerrok; /* Rattrapage d'erreur */}			
+\end{verbatim}
+\end{block}
+\end{frame}
+
+\end{document}
