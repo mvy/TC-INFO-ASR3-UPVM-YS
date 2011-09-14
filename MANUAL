@@ -8,3 +8,12 @@ cmake .
 make
 
 Les fichiers compilés se plaçerons dans le répertoire build/ à la racine.
+
+Tous les sous-répertoires se composent de la même manière.
+
+- Un fichier CHxx-Content.tex qui décrit le cours. 
+- Un fichier CHxx-Slides.tex qui structure content sous forme de slides
+- Un fichier CHxx-Handout.tex qui structure content sous forme de notes de cours.
+- Un répertoire images contenant les images du cours.
+
+Les cours utilisent la classe beamer.

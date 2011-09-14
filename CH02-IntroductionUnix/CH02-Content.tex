@@ -25,22 +25,22 @@
 \end{frame}
 
 
-\section{Objectif du chapitre}
+\section{Objectifs du chapitre}
 %%
 % Présentation générale du cours
 %%
 \begin{frame}{Objectifs}
 \begin{alertblock}{Nous allons voir}
 \begin{itemize}
-\item Le système de gestion de fichier d'UNIX
-\item Les bases du langages BASH
+\item Le système de gestion de fichier d'\textsc{Unix}
+\item Les bases du langages \textsc{Bash}
 \end{itemize}
 \end{alertblock}
 
-\begin{block}{Notions abordés dans ce module}
+\begin{block}{Notions abordées dans ce module}
 \begin{itemize}
-\item L'interface CLI (Command Line Interface)
-\item Fichiers (types, droits, etc...)
+\item La \textsc{Cli} (Command Line Interface)
+\item Fichiers (types, droits, etc\ldots)
 \item Commandes simples et paramétrées
 \item Programmes de commandes, scripts
 \item Interaction avec le système d’exploitation
@@ -48,29 +48,29 @@
 \end{block}
 \end{frame}
 
-\section{Historique et évolution}
+\section{Historique et évolutions}
 \subsection{Historique}
-\begin{frame}{Historique et évolution}
+\begin{frame}{Historique et évolutions}
 \begin{block}{Naissance}
 \begin{itemize}
-\item UNIX est né en 1969, et conçu par Ken Thomson aux laboratoires Bell d'AT\&T.
-\item Deux familles : BSD (Berkley Software Distribution) et SystemV (AT\&T).
+\item \textsc{Unix} est né en 1969, et conçu par Ken Thomson aux laboratoires Bell d'\textsc{At\&t}.
+\item Deux familles : \textsc{Bsd} (Berkley Software Distribution) et SystemV (\textsc{At\&t}).
 \end{itemize}
 
 \end{block}
 
 \begin{block}{Évolution}
 \begin{itemize}
-\item Standardisation POSX $\leftarrow$ convergence des deux familles.
-\item Développement des IHM $\leftarrow$ apparition des deux variantes : MOTIF (IBM) et OPEN LOOK (Sun et AT\&T)
+\item Standardisation \textsc{Posix} $\leftarrow$ convergence des deux familles.
+\item Développement des \textsc{Ihm} $\leftarrow$ apparition des deux variantes : \textsc{Motif} (\textsc{Ibm}) et \textsc{Open Look} (Sun et \textsc{At\&t})
 \end{itemize}
 
 \end{block}
 
-\begin{block}{Distribution}
+\begin{block}{Distributions}
 \begin{itemize}
-\item Versions commercialles (Solaris et AIX)
-\item Domaine public avec Linux
+\item Versions commerciales (Mac OS X, \textsc{Hp-ux}, \ldots)
+\item Versions libre (\textsc{*Bsd}, Linux, \ldots)
 \end{itemize}
 \end{block}
 
@@ -83,7 +83,7 @@
 \item Multi-utilisateurs
 \item Multi-tâches
 \item Universel
-\item SGF (Système de gestion de fichier) arborescent
+\item \textsc{Sgf} (Système de gestion de fichier) arborescent
 \item Processus hiérarchisés
 \end{itemize}
 \end{block}
@@ -93,7 +93,7 @@
 \subsection{Universalité}
 \begin{frame}{Universalité}
 \begin{alertblock}{Portabilité}
-L'objectif d'UNIX est d'avoir une conception portable (i.e. compatible et adaptable)
+L'objectif d'\textsc{Unix} est d'avoir une conception portable (i.e. compatible et adaptable)
 \end{alertblock}
 
 \begin{block}{Composantes}
@@ -147,9 +147,9 @@ Activité associée a l'exécution d'un programme.
 \begin{block}{Exemples de répertoires}
 \begin{itemize}
 \item dev : concerne les périphériques
-\item bin : contient des exécutables
-\item etc : fichiers pour les utilisateurs systèmes
-\item usr : répertoire des programmes utilisateurs, \url{/usr/bin} commandes du systèmes
+\item bin : contient les exécutables essentiels au système
+\item etc : fichiers de configuration
+\item usr : répertoire des programmes utilisateurs
 \end{itemize}
 \end{block}
 
@@ -204,7 +204,7 @@ Modifier le contenu d'un lien modifie le contenu de l'original, mais détruire u
 \begin{frame}{Types de fichiers}
 \begin{block}{Trois types}
 \begin{itemize}
-\item Ordinaire (suite d'octets stucturés selon un format)
+\item Ordinaire (suite d'octets stucturée selon un format)
 \item Répertoire (contient les références à d'autres fichiers, et leurs attributs : droits, position sur le disque, ...)
 \item Spécial  (associé à un périphérique)
 \end{itemize}
@@ -280,14 +280,9 @@ r x w & r x w & r x w \\
 \section{Langage de commande}
 
 \begin{frame}{Langage de commande}
-\begin{alertblock}{CLI}
-Ou Command Line Interface, c'est ce qui permet à l'utilisateur par le moyen de mots clés, d'agir directement avec le système.
-\end{alertblock}
-
 \begin{block}{Interpréteur de commande}
-Appellé aussi terminal il constitu l'interface entre l'utilisateur et la CLI.
+Appellé aussi Shell il constitue l'interface entre l'utilisateur et le système grâce à un langage simple et l'accès à des utilitaires appelés coreutils.
 \begin{itemize}
-\item Il permet de se loguer
 \item Il permet de saisir des commandes (entrée standard)
 \item Il permet d'afficher les résultats (sortie standard)
 \item Il permet de voir les erreurs (sortie d'erreur standard)
@@ -310,6 +305,8 @@ Appellé aussi terminal il constitu l'interface entre l'utilisateur et la CLI.
 \item \texttt{cd [directory]} : change directory
 \item \texttt{cd ..} : revenir au répertoire parent
 \item \texttt{cd .} : changer pour le répertoire courant
+\item \texttt{cd -} : revenir au répertoire précédent
+\item Voir aussi \texttt{pushd} et \texttt{popd}
 \item \textasciitilde : home, répertoire de l'utilisateur en cours
 \end{itemize}
 
@@ -371,8 +368,8 @@ drxw---r-x 2 root root 12  Jun 10 2008 F1/ \\
 
 \begin{block}{Les options longues}
 \begin{itemize}
-\item \texttt{rm --help} : affiche l'aide
-\item \texttt{./configure --prefix=/usr/bin}
+\item \texttt{rm ----help} : affiche l'aide
+\item \texttt{./configure ----prefix=/usr}
 \end{itemize}
 \end{block}
 \end{frame}
@@ -380,12 +377,12 @@ drxw---r-x 2 root root 12  Jun 10 2008 F1/ \\
 \begin{frame}{Find et grep}
 \begin{block}{Find}
 \texttt{find [path] [expression]}\\
-expression := (EXPR) | !EXPR | -not EXPR | EXPR1 -a(nd) EXPR2 | EXPR1 -o(r) EXPR2\\
+EXPR := (EXPR) | !EXPR | -not EXPR | EXPR -a(nd) EXPR | EXPR -o(r) EXPR | Ø\\
 
 \end{block}
 
 \begin{block}{grep}
-\texttt{grep [-iv] terme [fichier]} : rechreche dans les fichiers le terme (-i cas insensitive, -v negation)
+\texttt{grep [-iv] terme [fichier]} : recherche dans les fichiers le terme (-i cas insensitive, -v negation)
 \end{block}
 
 \begin{alertblock}{Méta-caractères}
@@ -403,13 +400,13 @@ expression := (EXPR) | !EXPR | -not EXPR | EXPR1 -a(nd) EXPR2 | EXPR1 -o(r) EXPR
 Liste de commande que l'interpréteur de commande va interpréter. C'est un programme.
 \end{block}
 
-\begin{block}{Le Sha bang}
-\url{\#!/bin/bash} : il indique le type d'interpréteur que l'on va utiliser pour exécuter le programme.\\
-\url{\#!/usr/bin/python}
+\begin{block}{Le Shebang}
+\url{\#!/bin/sh} : il indique le type d'interpréteur que l'on va utiliser pour exécuter le programme.\\
+\url{\#!/usr/bin/env python}
 \end{block}
 
 \begin{alertblock}{Remarque}
-Un script doit être exécutable pour pouvoir se lancer de cette manière : ./script ; Sinon il faut appeller l'interpréteur soit même : bash script
+Un script doit être exécutable (+x) pour pouvoir se lancer de cette manière : ./script ; Sinon il faut appeller l'interpréteur soit même : bash script
 \end{alertblock}
 \end{frame}
 
@@ -426,9 +423,11 @@ Un script doit être exécutable pour pouvoir se lancer de cette manière : ./sc
 \begin{itemize}
 \item Variables utiles pour les processus systèmes
 \item On les listes avec : \texttt{env}
-\item {\$}PWD : répertoire en cours
+\item {\$}USER : utilisateur courant
+\item {\$}HOME : dossier de l'utilisateur courant
 \item {\$}PATH : chemins d'accès des commandes exécutables directement.
-\item {\$}SHELL : shell utilisé par défaut.	
+\item {\$}SHELL : shell par défaut de l'utilisateur.
+\item {\$}PWD : répertoire en cours
 \end{itemize}
 \end{block}
 \end{frame}
@@ -475,10 +474,10 @@ fi
 \begin{frame}{Les tests}
 \begin{block}{Faire un test}
 \begin{itemize}
-\item chaîne\_1 == chaîne\_2
-    Vrai si les deux chaînes sont égales. Le symbole = peut servir à remplacer == 
+\item chaîne\_1 = chaîne\_2
+    Vrai si les deux chaînes sont égales.
 \item chaîne\_1 != chaîne\_2
-    Vrai si les deux chaînes sont différentes. 
+    Vrai si les deux chaînes sont différentes.
 \item chaîne\_1 $<$ chaîne\_2
     Vrai si chaîne\_1 se trouve avant chaîne\_2 dans l'ordre lexicographique de la localisation en cours. 
 \item chaîne\_1 $>$ chaîne\_2
