@@ -8,7 +8,7 @@
 \title{Systèmes d'exploitation}
 \subtitle{Les expressions regulières}
 
-\author{Yves \textsc{Stadler}}\institute{Codasystem, UPV-M}
+\author{Yves \textsc{Stadler}}\institute{Université de Lorraine}
 
 \date{\today}
 
@@ -27,68 +27,71 @@
 
 \begin{frame}{\sectitle}
 \begin{block}{\subsectitle}
-Expression régulière / Expression rationnelle
+    \begin{itemize}
+        \item Expression régulière (regular expression en français)
+        \item Expression rationnelle (on préfère cette traduction)
+    \end{itemize}
 \end{block}
 
 \begin{block}{\subsectitle}
-Parfois motif, ou en anglais pattern
+    \begin{itemize}
+        \item Parfois motif
+        \item pattern
+    \end{itemize}
 \end{block}
 
 \end{frame}
 
 
 
-\def\subsectitle{Késako?}
+\def\subsectitle{Définition}
 \begin{frame}{\sectitle}
-\begin{block}{\subsectitle}
-\begin{itemize}
-\item Chaîne de caractères
-\item Décrit un ensemble de chaînes de caractères
-\end{itemize}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Chaîne de caractères
+            \item Décrit un ensemble de chaînes de caractères
+    \end{itemize}
 \end{block}
-
 
 \def\subsectitle{D'où est-ce que cela vient?}
 \begin{block}{\subsectitle}
-\begin{itemize}
-\item De la théorie des mathématiques sur les langages
-\item Ken Thompson les intègre dans qed -> ed -> grep
-\end{itemize}
+    \begin{itemize}
+        \item De la théorie des mathématiques sur les langages
+        \item Ken Thompson les intègre dans qed -> ed -> grep
+    \end{itemize}
 \end{block}
 \end{frame}
 
-
-
-\def\subsectitle{À quoi ça sert?}
 \begin{frame}{\sectitle}
-\begin{block}{\subsectitle}
-\begin{itemize}
-\item Décrire et classifier les langages
-\item Editer, contrôler, manipuler du texte
-\end{itemize}
-\end{block}
+    \def\subsectitle{Usage}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Décrire et classifier les langages
+            \item Editer, contrôler, manipuler du texte
+        \end{itemize}
+    \end{block}
 
-\def\subsectitle{Comment les utiliser}
-\begin{block}{\subsectitle}
-\begin{itemize}
-\item Lex
-\item Expr
-\item awk
-\item Perl, TCL, Python
-\end{itemize}
-\end{block}
+    \def\subsectitle{Outils}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item Lex
+            \item Expr
+            \item awk
+            \item Perl, TCL, Python
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \def\sectitle{Principes}
 \def\subsectitle{Les bases}
 \begin{frame}{\sectitle}
-\begin{block}{\subsectitle}
-\begin{itemize}
-\item On veut décrire un ensemble de chaines par un motif
-\item On va utiliser des alternatives et des quantifieurs
-\item On rajoutera quelques méta-caractères
-\end{itemize}
-\end{block}
+    \begin{block}{\subsectitle}
+        \begin{itemize}
+            \item On veut décrire un ensemble de chaines par un motif
+            \item On va utiliser des alternatives et des quantifieurs
+            \item On rajoutera quelques méta-caractères
+        \end{itemize}
+    \end{block}
 \end{frame}
 
 \def\sectitle{Alternatives}
@@ -119,7 +122,7 @@ Parfois motif, ou en anglais pattern
 \begin{frame}[containsverbatim]{\ftitle}
 \begin{block}{\blocktitle}
 \begin{itemize}
-\item Un quantifieur quantifie le groupement le précédent
+\item Un quantifieur quantifie le groupement le précédant
 \item \verb!?! : le groupe peut apparaître zéro ou une fois
 \item \verb!*! : le groupe peut apparaître zéro, une ou plusieurs fois
 \item \verb!+! : le groupe doit apparaître au moins une fois, ou plus. 
@@ -164,7 +167,7 @@ Parfois motif, ou en anglais pattern
 \begin{block}{\blocktitle}
 \begin{itemize}
 \item \verb![...]! : N'importe quel caractères dans les crochets
-\item \verb![^...]! : N'importe quel caractères qui n'est pas dans les crochets
+\item \verb![^...]! : Caractères qui ne sont pas dans les crochets
 \end{itemize}
 \end{block}
 
@@ -179,12 +182,12 @@ Parfois motif, ou en anglais pattern
 \end{block}
 
 \def\blocktitle{Exemples}
-\begin{block}{\blocktitle}
+\begin{exampleblock}{\blocktitle}
 \begin{itemize}
 \item \verb!h[aeiouy]! désigne : "ha", "hi", "ho", "hu", "hy"
-\item \verb!h[^aeiouy]! désigne : "hb", "hc", "hd", "hf" ... sauf "ha", "hi", "ho", "hu", "hy"
+\item \verb!h[^aeiouy]! ne désigne pas : "ha", "hi", "ho", "hu", "hy"
 \end{itemize}
-\end{block}
+\end{exampleblock}
 \end{frame}
 
 
@@ -214,7 +217,7 @@ Parfois motif, ou en anglais pattern
 \def\blocktitle{Vocabulaire}
 \begin{block}{\blocktitle}
 \begin{itemize}
-\item Beaucoup de syntaxe se sont développées pour les expressions régulières
+\item Beaucoup de syntaxes se sont développées pour les expressions rationelles
 \item Les deux principales sont celles préconisée par POSIX (Portable Open Software Interface X) et les PCRE (Perl Compatible Regular Expression)
 \end{itemize}
 \end{block}
@@ -356,11 +359,6 @@ Parfois motif, ou en anglais pattern
 \item     Utilisation d'assertions, masques conditionnels
 \item     Fonctions de callback
 \end{itemize}
-\end{block}
-
-\def\blocktitle{Mais ....}
-\begin{block}{\blocktitle}
-Nous verrons cela la semaine prochaine! (Ouf!)
 \end{block}
 
 \end{frame}
