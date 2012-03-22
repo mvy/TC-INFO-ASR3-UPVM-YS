@@ -7,7 +7,7 @@ SET(LATEX_OUTPUT_PATH ../build)
 
 ADD_LATEX_DOCUMENT(
     CH07-Slides.tex MANGLE_TARGET_NAMES
-    INPUTS CH07-Content.tex
+    INPUTS CH07-Content.tex ../common/solarized.tex ../common/TSlides.tex
     IMAGE_DIRS images
     DEFAULT_PDF
     )
