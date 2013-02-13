@@ -6,10 +6,9 @@
 *.out
 *.snm
 
+*~
+
 */build/
 */auxd/
 
-Makefile
-CMakeFiles
-CMakeCache.txt
 build/*.tex
