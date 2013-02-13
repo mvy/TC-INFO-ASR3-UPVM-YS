@@ -5,7 +5,9 @@
 *.nav
 *.out
 *.snm
-*.cmake
+
+*/build/
+*/auxd/
 
 Makefile
 CMakeFiles
