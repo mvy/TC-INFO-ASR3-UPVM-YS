@@ -168,9 +168,9 @@ actions
 \def\blocktitle{Variables globales}
 \begin{block}{\blocktitle}
 \begin{itemize}
-\item \verb!$NF! nombre de champ sur la ligne (number of fields)%$
-\item \verb!$FS! contient l'expression pour les séparateurs de champs (peut être une RE)%$
-\item \verb!$NR! nombre de ligne (number of records)%$
+\item \verb!NF! nombre de champ sur la ligne (number of fields)%$
+\item \verb!FS! contient l'expression pour les séparateurs de champs (peut être une RE)%$
+\item \verb!NR! ligne en cours/nombre de ligne (number of records)%$
 \item \verb!$ORS! séparateur de ligne (\verb!\n! par défaut)%$
 \end{itemize}
 \end{block}
@@ -189,10 +189,10 @@ BEGIN { print "Le script qui affiche le premier champ" }
 END { print "Le script est fini" }
 
 BEGIN { print "Le script qui affiche le nombre de 
-ligne sans utiliser $NR"
+ligne sans utiliser NR"
 total = 0 }
 { total = total + 1 }
-END { print "Le total de lignes est " $NR " ou " total }
+END { print "Le total de lignes est " NR " ou " total }
 \end{verbatim}%$
 \end{block}
 \end{frame}
@@ -274,8 +274,7 @@ END { print "Le total est " total }
 \def\blocktitle{Affichage}
 \begin{block}{\blocktitle}
 \begin{itemize}
-\item print
-\item printf()
+\item print, printf()
 \end{itemize}
 \end{block}
 \end{frame}
@@ -320,19 +319,19 @@ for (var in tableau) {
 
 
 %!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-\def\ftitle{Introduction}
+\def\ftitle{Boucles, etc...}
 \begin{frame}[containsverbatim]{\ftitle}
 %_________________________________________
-\def\blocktitle{Vocabulaire}
+\def\blocktitle{Exemple}
 \begin{block}{\blocktitle}
 \begin{verbatim}
- awk 'BEGIN { print "Mémorisation de votre fichier " FILENAME }
-                 {memfile [NR] = $0 }
-           END   { for ( i = NR ; i >= 1 ; i-- ) {
-                    print i ":" memfile[i]
-                    }
-	          print "Fin"
-                 } ' fichier 
+awk 'BEGIN { print "Mémorisation de votre fichier " FILENAME }
+     {memfile [NR] = $0 }
+     END   { for ( i = NR ; i >= 1 ; i-- ) {
+                 print i ":" memfile[i]
+                }
+             print "Fin"
+           } ' fichier 
 \end{verbatim}%$
 \end{block}
 \end{frame}
